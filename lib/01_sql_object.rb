@@ -69,7 +69,7 @@ class SQLObject
       if self.class.columns.include?(attr_name)
         self.send("#{attr_name}=", value)
       else
-        raise "unknown attribute '#{attr_name}'" unless self.class.columns.include?(attr_name)
+        raise "unknown attribute '#{attr_name}'"
       end
     end
   end
