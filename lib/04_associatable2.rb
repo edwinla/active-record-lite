@@ -5,8 +5,6 @@ module Associatable
   # Remember to go back to 04_associatable to write ::assoc_options
 
   def has_one_through(name, through_name, source_name)
-
-
     define_method(name) do
 
       through_options = self.class.assoc_options[through_name]
@@ -26,7 +24,7 @@ module Associatable
         FROM
           #{tt}
         JOIN
-          "#{st}"
+          #{st}
         ON
           #{tt}.#{s_fk} = #{st}.#{s_pk}
         WHERE

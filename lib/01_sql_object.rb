@@ -1,7 +1,5 @@
 require_relative 'db_connection'
 require 'active_support/inflector'
-# NB: the attr_accessor we wrote in phase 0 is NOT used in the rest
-# of this project. It was only a warm up.
 
 class SQLObject
   def self.columns
@@ -20,13 +18,8 @@ class SQLObject
 
   def self.finalize!
     self.columns.each do |col|
-      define_method("#{col}=") do |val|
-        self.attributes[col] = val
-      end
-
-      define_method(col) do
-        self.attributes[col]
-      end
+      define_method("#{col}=") { |val| self.attributes[col] = val }
+      define_method(col) { self.attributes[col] }
     end
   end
 
@@ -73,8 +66,11 @@ class SQLObject
   def initialize(params = {})
     params.each do |attr_name, value|
       attr_name = attr_name.to_sym
-      raise "unknown attribute '#{attr_name}'" unless self.class.columns.include?(attr_name)
-      self.send("#{attr_name}=", value)
+      if self.class.columns.include?(attr_name)
+        self.send("#{attr_name}=", value)
+      else
+        raise "unknown attribute '#{attr_name}'" unless self.class.columns.include?(attr_name)
+      end
     end
   end
 

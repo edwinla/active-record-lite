@@ -1,8 +1,6 @@
 require_relative '02_searchable'
 require 'active_support/inflector'
-require 'byebug'
 
-# Phase IIIa
 class AssocOptions
   attr_accessor(
     :foreign_key,
@@ -26,9 +24,7 @@ class BelongsToOptions < AssocOptions
       foreign_key: "#{name}_id".to_sym,
       class_name: name.to_s.camelcase
     }.merge(options)
-    default_options.each do |key, value|
-      self.send("#{key}=", value)
-    end
+    default_options.each { |key, value| self.send("#{key}=", value) }
   end
 end
 
@@ -40,14 +36,11 @@ class HasManyOptions < AssocOptions
       class_name: name.to_s.singularize.camelcase
     }.merge(options)
 
-    default_options.each do |key, value|
-      self.send("#{key}=", value)
-    end
+    default_options.each { |key, value| self.send("#{key}=", value) }
   end
 end
 
 module Associatable
-  # Phase IIIb
   def belongs_to(name, options = {})
     self.assoc_options[name] = BelongsToOptions.new(name, options)
     define_method(name) do
@@ -74,11 +67,9 @@ module Associatable
   def assoc_options
     @assoc_options ||= {}
     @assoc_options
-    # Wait to implement this in Phase IVa. Modify `belongs_to`, too.
   end
 end
 
 class SQLObject
   extend Associatable
-  # Mixin Associatable here...
 end

@@ -22,5 +22,4 @@ end
 
 class SQLObject
   extend Searchable
-  # Mixin Searchable here...
 end
