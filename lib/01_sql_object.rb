@@ -39,7 +39,7 @@ class SQLObject
   end
 
   def self.generate_table_name
-    ActiveSupport::Inflector.pluralize(self.name.underscore).downcase
+    ActiveSupport::Inflector.pluralize(self.name.underscore)
   end
 
   def self.all
