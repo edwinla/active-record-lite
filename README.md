@@ -25,7 +25,7 @@ The SQL objects implemented in ActiveRecord Lite mimics many of the methods incl
 - `#update` - Updates SQL object's attributes
 
 To interact with the database, a I created a `DBConnection::` (`lib/db_connection.rb`) class as middleware. For example, `::find`:
-```
+```ruby
 def self.find(id)
   result = DBConnection.execute(<<-SQL, id).first
     SELECT
@@ -49,7 +49,7 @@ pry(main)> #<Cat:0x007fa409cee528 @attributes={:id=>3, :name=>"Markov", :tempera
 
 #### Object Relationships
 One of ActiveRecord's main features include finding associated data relationships via foreign keys. Through the `Associatable` module, column-column relationships can be found between two SQL tables. For example, the `#has_many` method is defined as below:
-```
+```ruby
 def has_many(name, options = {})
   self.assoc_options[name] = HasManyOptions.new(name, self.name, options)
   define_method(name) do
